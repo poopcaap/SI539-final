@@ -1,0 +1,42 @@
+{
+  "AT&T Park": {
+    "lat": 37.77861,
+    "long": -122.38917,
+    "team": "San Francisco Giants"
+  },
+  "Miller Park": {
+    "lat": 43.02833,
+    "long": -87.97111,
+    "team": "Milwaukee Brewers"
+  },
+  "O.co Coliseum": {
+    "lat": 37.75167,
+    "long": -122.20056,
+    "team": "Oakland Athletics"
+  },
+  "Petco Park": {
+    "lat": 32.7073,
+    "long": -117.1566,
+    "team": "San Diego Padres"
+  },
+  "Chase Field": {
+    "lat": 33.44528,
+    "long": -112.06694,
+    "team": "Arizona Diamondbacks"
+  },
+  "Rogers Centre": {
+    "lat": 43.64139,
+    "long": -79.38917,
+    "team": "Toronto Blue Jays"
+  },
+  "PNC Park": {
+    "lat": 40.44694,
+    "long": -80.00583,
+    "team": "Pittsburgh Pirates"
+  },
+  "Target Field": {
+    "lat": 44.98167,
+    "long": -93.27833,
+    "team": "Minnesota Twins"
+  }
+}
