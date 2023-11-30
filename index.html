@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Sports Teams Visualization</title>
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    </head>
+<body>
+    <header>
+        <h1>Sports Teams Visualization</h1>
+		<!-- Nav is a sematic tag page that aids accessibility -->
+		<nav>
+			<ul>
+				<!-- Since I am on the index file I added class = action to the link to index. -->
+				<!-- For this homework leave the class on index for all three pages. -->
+				<li class="active"><a href="index.html">NBA</a></li>
+				<li><a href="NFL_team.html">NFL</a></li>
+				<li><a href="MLB_team.html">MLB</a></li>
+                <li><a href="NHL_team.html">NHL</a></li>
+			</ul>
+		</nav>
+		<!-- The h1 is a semantic tag that aids accessibility -->
+        <a href = "#main-content">Skip to Main Content</a>    
+	</header>
+
+    <!-- Content for NBA, this can be your existing map or other content -->
+    <div class="content">
+        <div id="map-container">
+            <div id="map"></div>
+        </div>
+        <div id="team-list">
+            <h3>Eastern Conference</h3>
+            <h4>Atlantic Division</h4>
+            <ul>
+                <li><a href="#" class="team-link" data-team="Celtics">Boston Celtics</a></li>
+                <li><a href="#" class="team-link" data-team="Nets">Brooklyn Nets</a></li>
+                <li><a href="#" class="team-link" data-team="Knicks">New York Knicks</a></li>
+                <li><a href="#" class="team-link" data-team="76ers">Philadelphia 76ers</a></li>
+                <li><a href="#" class="team-link" data-team="Raptors">Toronto Raptors</a></li>
+            </ul>
+            <h4>Central Division</h4>
+            <ul>
+                <li><a href="#" class="team-link" data-team="Bulls">Chicago Bulls</a></li>
+                <li><a href="#" class="team-link" data-team="Cavaliers">Cleveland Cavaliers</a></li>
+                <li><a href="#" class="team-link" data-team="Pistons">Detroit Pistons</a></li>
+                <li><a href="#" class="team-link" data-team="Pacers">Indiana Pacers</a></li>
+                <li><a href="#" class="team-link" data-team="Bucks">Milwaukee Bucks</a></li>
+            </ul>
+            <h4>Southeast Division</h4>
+            <ul>
+                <li><a href="#" class="team-link" data-team="Hawks">Atlanta Hawks</a></li>
+                <li><a href="#" class="team-link" data-team="Hornets">Charlotte Hornets</a></li>
+                <li><a href="#" class="team-link" data-team="Heat">Miami Heat</a></li>
+                <li><a href="#" class="team-link" data-team="Magic">Orlando Magic</a></li>
+                <li><a href="#" class="team-link" data-team="Wizards">Washington Wizards</a></li>
+            </ul>
+        
+            <h3>Western Conference</h3>
+            <h4>Northwest Division</h4>
+            <ul>
+                <li><a href="#" class="team-link" data-team="Nuggets">Denver Nuggets</a></li>
+                <li><a href="#" class="team-link" data-team="Timberwolves">Minnesota Timberwolves</a></li>
+                <li><a href="#" class="team-link" data-team="Thunder">Oklahoma City Thunder</a></li>
+                <li><a href="#" class="team-link" data-team="Trail Blazers">Portland Trail Blazers</a></li>
+                <li><a href="#" class="team-link" data-team="Jazz">Utah Jazz</a></li>
+            </ul>
+            <h4>Pacific Division</h4>
+            <ul>
+                <li><a href="#" class="team-link" data-team="Warriors">Golden State Warriors</a></li>
+                <li><a href="#" class="team-link" data-team="Clippers">Los Angeles Clippers</a></li>
+                <li><a href="#" class="team-link" data-team="Lakers">Los Angeles Lakers</a></li>
+                <li><a href="#" class="team-link" data-team="Suns">Phoenix Suns</a></li>
+                <li><a href="#" class="team-link" data-team="Kings">Sacramento Kings</a></li>
+            </ul>
+            <h4>Southwest Division</h4>
+            <ul>
+                <li><a href="#" class="team-link" data-team="Mavericks">Dallas Mavericks</a></li>
+                <li><a href="#" class="team-link" data-team="Rockets">Houston Rockets</a></li>
+                <li><a href="#" class="team-link" data-team="Grizzlies">Memphis Grizzlies</a></li>
+                <li><a href="#" class="team-link" data-team="Pelicans">New Orleans Pelicans</a></li>
+                <li><a href="#" class="team-link" data-team="Spurs">San Antonio Spurs</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        var map = L.map('map').setView([37.8, -96], 4); // Set the initial view of the map
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Embedded modified JSON data
+        var arenasData = [
+            {
+                "coordinates": [
+                    -75.172,
+                    39.9012
+                ],
+                "conference": "Eastern",
+                "division": "Atlantic",
+                "team": "76ers",
+                "city": "Philadelphia",
+                "arena": "Wells Fargo Center",
+                "schedule": "https://www.nba.com/sixers/schedule",
+                "logo": ""
+            },
+            {
+                "coordinates": [
+                    -71.0621,
+                    42.3662
+                ],
+                "conference": "Eastern",
+                "division": "Atlantic",
+                "team": "Celtics",
+                "city": "Boston",
+                "arena": "TD Garden",
+                "schedule": "https://www.nba.com/celtics/schedule",
+                "logo": ""
+            },
+            {
+                "coordinates": [
+                    -73.9934,
+                    40.7505
+                ],
+                "conference": "Eastern",
+                "division": "Atlantic",
+                "team": "Knicks",
+                "city": "New York",
+                "arena": "Madison Square Garden",
+                "schedule": "https://www.nba.com/knicks/schedule",
+                "logo": ""
+            },
+            {
+                "coordinates": [
+                    -73.9758,
+                    40.6828
+                ],
+                "conference": "Eastern",
+                "division": "Atlantic",
+                "team": "Nets",
+                "city": "Brooklyn",
+                "arena": "Barclays Center",
+                "schedule": "https://www.nba.com/nets/schedule",
+                "logo": ""
+            },
+            {
+                "coordinates": [
+                    -79.3791,
+                    43.6435
+                ],
+                "conference": "Eastern",
+                "division": "Atlantic",
+                "team": "Raptors",
+                "city": "Toronto",
+                "arena": "Air Canada Center",
+                "schedule": "https://www.nba.com/raptors/schedule",
+                "logo": ""
+            },
+            {
+                "coordinates": [
+                    -87.9172,
+                    43.0436
+                ],
+                "conference": "Eastern",
+                "division": "Central",
+                "team": "Bucks",
+                "city": "Milwaukee",
+                "arena": "Bradley Center",
+                "schedule": "https://www.nba.com/bucks/schedule",
+                "logo": ""
+            },
+            {
+                "coordinates": [
+                    -87.6742,
+                    41.8807
+                ],
+                "conference": "Eastern",
+                "division": "Central",
+                "team": "Bulls",
+                "city": "Chicago",
+                "arena": "United Center",
+                "schedule": "https://www.nba.com/bulls/schedule",
+                "logo": ""
+            },
+            {
+                "coordinates": [
+                    -81.6882,
+                    41.4965
+                ],
+                "conference": "Eastern",
+                "division": "Central",
+                "team": "Cavaliers",
+                "city": "Cleveland",
+                "arena": "Quicken Loans Arena",
+                "schedule": "https://www.nba.com/cavaliers/schedule",
+                "logo": ""
+            },
+            {
+                "coordinates": [
+                    -83.0552,
+                    42.341
+                ],
+                "conference": "Eastern",
+                "division": "Central",
+                "team": "Pistons",
+                "city": "Detroit",
+                "arena": "Little Caesars Arena",
+                "schedule": "https://www.nba.com/pistons/schedule",
+                "logo": ""
+            },
+            {
+                "coordinates": [
+                    -86.1555,
+                    39.7639
+                ],
+                "conference": "Eastern",
+                "division": "Central",
+                "team": "Pacers",
+                "city": "Indianapolis",
+                "arena": "Bankers Life Fieldhouse",
+                "schedule": "https://www.nba.com/pacers/schedule",
+                "logo": ""
+            },
+            {
+                "coordinates": [
+                    -111.9011,
+                    40.7683
+                ],
+                "conference": "Western",
+                "division": "Northwest",
+                "team": "Jazz",
+                "city": "Utah",
+                "arena": "Vivint Smart Home Arena",
+                "schedule": "https://www.nba.com/jazz/schedule",
+                "logo": ""
+            },
+            {
+                "coordinates": [
+                    -97.5151,
+                    35.4634
+                ],
+                "conference": "Western",
+                "division": "Northwest",
+                "team": "Thunder",
+                "city": "Oklahoma City",
+                "arena": "Chesapeake Arena",
+                "schedule": "https://www.nba.com/thunder/schedule",
+                "logo": ""
+            },
+            {
+                "coordinates": [
+                    -93.2762,
+                    44.9795
+                ],
+                "conference": "Western",
+                "division": "Northwest",
+                "team": "Timberwolves",
+                "city": "Minnesota",
+                "arena": "Target Center",
+                "schedule": "https://www.nba.com/timberwolves/schedule",
+                "logo": ""
+            },
+            {
+                "coordinates": [
+                    -122.6668,
+                    45.5316
+                ],
+                "conference": "Western",
+                "division": "Northwest",
+                "team": "Trail Blazers",
+                "city": "Portland",
+                "arena": "Moda Center",
+                "schedule": "https://www.nba.com/trail blazers/schedule",
+                "logo": ""
+            },
+            {
+                "coordinates": [
+                    -105.0077,
+                    39.7487
+                ],
+                "conference": "Western",
+                "division": "Northwest",
+                "team": "Nuggets",
+                "city": "Denver",
+                "arena": "Pepsi Center",
+                "schedule": "https://www.nba.com/nuggets/schedule",
+                "logo": ""
+            },
+            {
+                "coordinates": [
+                    -118.2673,
+                    34.043
+                ],
+                "conference": "Western",
+                "division": "Pacific",
+                "team": "Clippers",
+                "city": "Los Angeles",
+                "arena": "Staples Center",
+                "schedule": "https://www.nba.com/clippers/schedule",
+                "logo": ""
+            },
+            {
+                "coordinates": [
+                    -121.4996,
+                    38.5806
+                ],
+                "conference": "Western",
+                "division": "Pacific",
+                "team": "Kings",
+                "city": "Sacramento",
+                "arena": "Golden 1 Center",
+                "schedule": "https://www.nba.com/kings/schedule",
+                "logo": ""
+            },
+            {
+                "coordinates": [
+                    -118.2673,
+                    34.043
+                ],
+                "conference": "Western",
+                "division": "Pacific",
+                "team": "Lakers",
+                "city": "Los Angeles",
+                "arena": "Staples Center",
+                "schedule": "https://www.nba.com/lakers/schedule",
+                "logo": ""
+            },
+            {
+                "coordinates": [
+                    -112.0712,
+                    33.4457
+                ],
+                "conference": "Western",
+                "division": "Pacific",
+                "team": "Suns",
+                "city": "Phoenix",
+                "arena": "Talking Stick Resort Arena",
+                "schedule": "https://www.nba.com/suns/schedule",
+                "logo": ""
+            },
+            {
+                "coordinates": [
+                    -122.203,
+                    37.7503
+                ],
+                "conference": "Western",
+                "division": "Pacific",
+                "team": "Warriors",
+                "city": "Golden State",
+                "arena": "Oracle Arena",
+                "schedule": "https://www.nba.com/warriors/schedule",
+                "logo": ""
+            },
+            {
+                "coordinates": [
+                    -77.0209,
+                    38.8981
+                ],
+                "conference": "Eastern",
+                "division": "Southeast",
+                "team": "Wizards",
+                "city": "Washington",
+                "arena": "AmericanAirlines Arena",
+                "schedule": "https://www.nba.com/wizards/schedule",
+                "logo": ""
+            },
+            {
+                "coordinates": [
+                    -84.3963,
+                    33.7573
+                ],
+                "conference": "Eastern",
+                "division": "Southeast",
+                "team": "Hawks",
+                "city": "Atlanta",
+                "arena": "Phillips Arena",
+                "schedule": "https://www.nba.com/hawks/schedule",
+                "logo": ""
+            },
+            {
+                "coordinates": [
+                    -80.187,
+                    25.7814
+                ],
+                "conference": "Eastern",
+                "division": "Southeast",
+                "team": "Heat",
+                "city": "Miami",
+                "arena": "AmericanAirlines Arena",
+                "schedule": "https://www.nba.com/heat/schedule",
+                "logo": ""
+            },
+            {
+                "coordinates": [
+                    -80.8392,
+                    35.2251
+                ],
+                "conference": "Eastern",
+                "division": "Southeast",
+                "team": "Hornets",
+                "city": "Charlotte",
+                "arena": "Spectrum Center",
+                "schedule": "https://www.nba.com/hornets/schedule",
+                "logo": ""
+            },
+            {
+                "coordinates": [
+                    -81.3837,
+                    28.5399
+                ],
+                "conference": "Eastern",
+                "division": "Southeast",
+                "team": "Magic",
+                "city": "Orlando",
+                "arena": "Amway Center",
+                "schedule": "https://www.nba.com/magic/schedule",
+                "logo": ""
+            },
+            {
+                "coordinates": [
+                    -96.8104,
+                    32.7905
+                ],
+                "conference": "Western",
+                "division": "Southwest",
+                "team": "Mavericks",
+                "city": "Dallas",
+                "arena": "American Airlines Ceter",
+                "schedule": "https://www.nba.com/schedule/mavericks",
+                "logo": ""
+            },
+            {
+                "coordinates": [
+                    -90.0821,
+                    29.949
+                ],
+                "conference": "Western",
+                "division": "Southwest",
+                "team": "Pelicans",
+                "city": "New Orleans",
+                "arena": "Smoothie King Center",
+                "schedule": "https://www.nba.com/pelicans/schedule",
+                "logo": ""
+            },
+            {
+                "coordinates": [
+                    -95.3621,
+                    29.7508
+                ],
+                "conference": "Western",
+                "division": "Southwest",
+                "team": "Rockets",
+                "city": "Houston",
+                "arena": "Toyota Center",
+                "schedule": "https://www.nba.com/rockets/schedule",
+                "logo": ""
+            },
+            {
+                "coordinates": [
+                    -98.4375,
+                    29.4271
+                ],
+                "conference": "Western",
+                "division": "Southwest",
+                "team": "Spurs",
+                "city": "San Antonio",
+                "arena": "AT&T Center",
+                "schedule": "https://www.nba.com/spurs/schedule",
+                "logo": ""
+            },
+            {
+                "coordinates": [
+                    -90.0505,
+                    35.1382
+                ],
+                "conference": "Western",
+                "division": "Southwest",
+                "team": "Grizzlies",
+                "city": "Memphis",
+                "arena": "Fedex Forum",
+                "schedule": "https://www.nba.com/grizzlies/schedule",
+                "logo": ""
+            }
+        ];
+
+        // Function to create popup content
+        function createPopupContent(data) {
+            return `
+                <div>
+                    <h3>${data.team}</h3>
+                    <p><b>City:</b> ${data.city}</p>
+                    <p><b>Arena:</b> ${data.arena}</p>
+                    <p><b>Conference:</b> ${data.conference}</p>
+                    <p><b>Division:</b> ${data.division}</p>
+                    <p><a href="${data.schedule}" target="_blank">View Schedule</a></p>
+                    <!-- Add logo here if available -->
+                </div>
+            `;
+        }
+
+        // Optionally, call updateMap('all') to show all teams initially, or remove this line to start with an empty map
+
+        function createCombinedPopupContent(teams) {
+            var content = '<div class="popup-content-container">';
+            content += teams.map(team => `
+                <div class="popup-content">
+                    <h3>${team.team}</h3>
+                    <p><b>City:</b> ${team.city}</p>
+                    <p><b>Arena:</b> ${team.arena}</p>
+                    <p><b>Conference:</b> ${team.conference}</p>
+                    <p><b>Division:</b> ${team.division}</p>
+                    <p><a href="${team.schedule}" target="_blank">View Schedule</a></p>
+                </div>
+            `).join('');
+            content += '</div>';
+            return content;
+        }
+
+        var markers = {}; // Dictionary to hold references to markers
+
+        // Function to create a marker for each team
+        arenasData.forEach(function(data) {
+            var marker = L.marker([data.coordinates[1], data.coordinates[0]])
+                        .addTo(map)
+                        .bindPopup(createPopupContent(data)); // Assuming createPopupContent is your function
+            markers[data.team] = marker; // Store the marker with the team name as key
+        });
+
+        // Updated event listeners for team links
+        document.querySelectorAll('.team-link').forEach(function(link) {
+            link.addEventListener('click', function(event) {
+                event.preventDefault();
+                var teamName = this.getAttribute('data-team');
+                var marker = markers[teamName];
+                if (marker) {
+                map.flyTo(marker.getLatLng(), 12); // Zoom level 13, adjust as needed
+                setTimeout(function() {
+                    marker.openPopup();
+                }, 1000);}
+            });
+        })
+
+        // Group teams by coordinates
+        var teamsByCoordinates = {};
+        arenasData.forEach(function(data) {
+            var key = data.coordinates.join(',');
+            teamsByCoordinates[key] = teamsByCoordinates[key] || [];
+            teamsByCoordinates[key].push(data);
+        });
+
+        // Add markers to the map with grouped popup information
+        Object.keys(teamsByCoordinates).forEach(function(key) {
+            var teams = teamsByCoordinates[key];
+            var coordinates = teams[0].coordinates;
+            var marker = L.marker([coordinates[1], coordinates[0]]).addTo(map);
+            var popupContent = createCombinedPopupContent(teams);
+            marker.bindPopup(popupContent);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Sports Teams Visualization</title>
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    </head>
+<body>
+    <header>
+        <h1>Sports Teams Visualization</h1>
+		<!-- Nav is a sematic tag page that aids accessibility -->
+		<nav>
+			<ul>
+				<!-- Since I am on the index file I added class = action to the link to index. -->
+				<!-- For this homework leave the class on index for all three pages. -->
+				<li><a href="index.html">NBA</a></li>
+				<li><a href="NFL_team.html">NFL</a></li>
+				<li class="active"><a href="MLB_team.html">MLB</a></li>
+                <li><a href="NHL_team.html">NHL</a></li>
+			</ul>
+		</nav>
+		<!-- The h1 is a semantic tag that aids accessibility -->
+        <a href = "#main-content">Skip to Main Content</a>    
+	</header>
+
+    <!-- Content for NBA, this can be your existing map or other content -->
+    <div class="content">
+        <div id="map-container">
+            <div id="map"></div>
+        </div>
+        <div id="team-list">
+            <h3>American League</h3>
+            <h4>AL East</h4>
+            <ul>
+                <li><a href="#" class="team-link" data-team="Orioles">Baltimore Orioles</a></li>
+                <li><a href="#" class="team-link" data-team="Red Sox">Boston Red Sox</a></li>
+                <li><a href="#" class="team-link" data-team="Yankees">New York Yankees</a></li>
+                <li><a href="#" class="team-link" data-team="Rays">Tampa Bay Rays</a></li>
+                <li><a href="#" class="team-link" data-team="Blue Jays">Toronto Blue Jays</a></li>
+            </ul>
+            <h4>AL Central</h4>
+            <ul>
+                <li><a href="#" class="team-link" data-team="White Sox">Chicago White Sox</a></li>
+                <li><a href="#" class="team-link" data-team="Indians">Cleveland Indians</a></li>
+                <li><a href="#" class="team-link" data-team="Tigers">Detroit Tigers</a></li>
+                <li><a href="#" class="team-link" data-team="Royals">Kansas City Royals</a></li>
+                <li><a href="#" class="team-link" data-team="Twins">Minnesota Twins</a></li>
+            </ul>
+            <h4>AL West</h4>
+            <ul>
+                <li><a href="#" class="team-link" data-team="Astros">Houston Astros</a></li>
+                <li><a href="#" class="team-link" data-team="Angels">Los Angeles Angels</a></li>
+                <li><a href="#" class="team-link" data-team="Athletics">Oakland Athletics</a></li>
+                <li><a href="#" class="team-link" data-team="Mariners">Seattle Mariners</a></li>
+                <li><a href="#" class="team-link" data-team="Rangers">Texas Rangers</a></li>
+            </ul>
+        
+            <h3>National League</h3>
+            <h4>NL East</h4>
+            <ul>
+                <li><a href="#" class="team-link" data-team="Braves">Atlanta Braves</a></li>
+                <li><a href="#" class="team-link" data-team="Marlins">Miami Marlins</a></li>
+                <li><a href="#" class="team-link" data-team="Mets">New York Mets</a></li>
+                <li><a href="#" class="team-link" data-team="Phillies">Philadelphia Phillies</a></li>
+                <li><a href="#" class="team-link" data-team="Nationals">Washington Nationals</a></li>
+            </ul>
+            <h4>NL Central</h4>
+            <ul>
+                <li><a href="#" class="team-link" data-team="Cubs">Chicago Cubs</a></li>
+                <li><a href="#" class="team-link" data-team="Reds">Cincinnati Reds</a></li>
+                <li><a href="#" class="team-link" data-team="Brewers">Milwaukee Brewers</a></li>
+                <li><a href="#" class="team-link" data-team="Pirates">Pittsburgh Pirates</a></li>
+                <li><a href="#" class="team-link" data-team="Cardinals">St. Louis Cardinals</a></li>
+            </ul>
+            <h4>NL West</h4>
+            <ul>
+                <li><a href="#" class="team-link" data-team="Diamondbacks">Arizona Diamondbacks</a></li>
+                <li><a href="#" class="team-link" data-team="Rockies">Colorado Rockies</a></li>
+                <li><a href="#" class="team-link" data-team="Dodgers">Los Angeles Dodgers</a></li>
+                <li><a href="#" class="team-link" data-team="Padres">San Diego Padres</a></li>
+                <li><a href="#" class="team-link" data-team="Giants">San Francisco Giants</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        var map = L.map('map').setView([37.8, -96], 4); // Set the initial view of the map
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Embedded modified JSON data
+        var arenasData = [
+            {
+                "coordinates": [-73.92637835140461, 40.829585745023344],
+                "league": "American League",
+                "division": "East",
+                "team": "Yankees",
+                "city": "New York",
+                "stadium": "Yankee Stadium",
+                "schedule": "https://www.mlb.com/yankees/schedule",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-118.240616, 34.073851],
+                "league": "National League",
+                "division": "West",
+                "team": "Dodgers",
+                "city": "Los Angeles",
+                "stadium": "Dodger Stadium",
+                "schedule": "https://www.mlb.com/dodgers/schedule",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-87.633109, 41.948438],
+                "league": "National League",
+                "division": "Central",
+                "team": "Cubs",
+                "city": "Chicago",
+                "stadium": "Wrigley Field",
+                "schedule": "https://www.mlb.com/cubs/schedule",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-71.0975, 42.34639],
+                "league": "American League",
+                "division": "East",
+                "team": "Red Sox",
+                "city": "Boston",
+                "stadium": "Fenway Park",
+                "schedule": "https://www.mlb.com/redsox/schedule",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-95.355516, 29.757268],
+                "league": "American League",
+                "division": "West",
+                "team": "Astros",
+                "city": "Houston",
+                "stadium": "Minute Maid Park",
+                "schedule": "https://www.mlb.com/astros/schedule",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-82.653392, 27.768225],
+                "league": "American League",
+                "division": "East",
+                "team": "Rays",
+                "city": "Tampa Bay",
+                "stadium": "Tropicana Field",
+                "schedule": "https://www.mlb.com/rays/schedule",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-84.506836, 39.097931],
+                "league": "National League",
+                "division": "Central",
+                "team": "Reds",
+                "city": "Cincinnati",
+                "stadium": "Great American Ball Park",
+                "schedule": "https://www.mlb.com/reds/schedule",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-73.846309, 40.757088],
+                "league": "National League",
+                "division": "East",
+                "team": "Mets",
+                "city": "New York",
+                "stadium": "Citi Field",
+                "schedule": "https://www.mlb.com/mets/schedule",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-76.621618, 39.283918],
+                "league": "American League",
+                "division": "East",
+                "team": "Orioles",
+                "city": "Baltimore",
+                "stadium": "Oriole Park at Camden Yards",
+                "schedule": "https://www.mlb.com/orioles/schedule",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-94.480314, 39.051672],
+                "league": "American League",
+                "division": "Central",
+                "team": "Royals",
+                "city": "Kansas City",
+                "stadium": "Kauffman Stadium",
+                "schedule": "https://www.mlb.com/royals/schedule",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-81.685229, 41.496211],
+                "league": "American League",
+                "division": "Central",
+                "team": "Indians",
+                "city": "Cleveland",
+                "stadium": "Progressive Field",
+                "schedule": "https://www.mlb.com/guardians/schedule",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-97.084, 32.747],
+                "league": "American League",
+                "division": "West",
+                "team": "Rangers",
+                "city": "Arlington",
+                "stadium": "Globe Life Field",
+                "schedule": "https://www.mlb.com/rangers/schedule",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-122.332071, 47.591391],
+                "league": "American League",
+                "division": "West",
+                "team": "Mariners",
+                "city": "Seattle",
+                "stadium": "T-Mobile Park",
+                "schedule": "https://www.mlb.com/mariners/schedule",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-104.994178, 39.755882],
+                "league": "National League",
+                "division": "West",
+                "team": "Rockies",
+                "city": "Denver",
+                "stadium": "Coors Field",
+                "schedule": "https://www.mlb.com/rockies/schedule",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-117.202936, 33.800308],
+                "league": "American League",
+                "division": "West",
+                "team": "Angels",
+                "city": "Anaheim",
+                "stadium": "Angel Stadium",
+                "schedule": "https://www.mlb.com/angels/schedule",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-90.193054, 38.622619],
+                "league": "National League",
+                "division": "Central",
+                "team": "Cardinals",
+                "city": "St. Louis",
+                "stadium": "Busch Stadium",
+                "schedule": "https://www.mlb.com/cardinals/schedule",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-87.63350707871098, 41.82990349200447],
+                "league": "American League",
+                "division": "Central",
+                "team": "White Sox",
+                "city": "Chicago",
+                "stadium": "Guaranteed Rate Field",
+                "schedule": "https://www.mlb.com/whitesox/schedule",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-83.04852, 42.339227],
+                "league": "American League",
+                "division": "Central",
+                "team": "Tigers",
+                "city": "Detroit",
+                "stadium": "Comerica Park",
+                "schedule": "https://www.mlb.com/tigers/schedule",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-84.38944,33.73528],
+                "league": "National League",
+                "division": "East",
+                "team": "Braves",
+                "city": "Atlanta",
+                "stadium": "Truist Park",
+                "schedule": "https://www.mlb.com/braves/schedule",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-80.219133, 25.778317],
+                "league": "National League",
+                "division": "East",
+                "team": "Marlins",
+                "city": "Miami",
+                "stadium": "Marlins Park",
+                "schedule": "https://www.mlb.com/marlins/schedule",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-77.007528, 38.872986],
+                "league": "National League",
+                "division": "East",
+                "team": "Nationals",
+                "city": "Washington D.C.",
+                "stadium": "Nationals Park",
+                "schedule": "https://www.mlb.com/nationals/schedule",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-75.166489, 39.906057],
+                "league": "National League",
+                "division": "East",
+                "team": "Phillies",
+                "city": "Philadelphia",
+                "stadium": "Citizens Bank Park",
+                "schedule": "https://www.mlb.com/phillies/schedule",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-122.38917, 37.77861],
+                "league": "National League",
+                "division": "West",
+                "team": "Giants",
+                "city": "San Francisco",
+                "stadium": "AT&T Park",
+                "schedule": "https://www.mlb.com/giants/schedule",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-87.97111, 43.02833],
+                "league": "National League",
+                "division": "Central",
+                "team": "Brewers",
+                "city": "Milwaukee",
+                "stadium": "Miller Park",
+                "schedule": "https://www.mlb.com/brewers/schedule",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-122.20056, 37.75167],
+                "league": "American League",
+                "division": "West",
+                "team": "Athletics",
+                "city": "Oakland",
+                "stadium": "O.co Coliseum",
+                "schedule": "https://www.mlb.com/athletics/schedule",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-117.1566, 32.7073],
+                "league": "National League",
+                "division": "West",
+                "team": "Padres",
+                "city": "San Diego",
+                "stadium": "Petco Park",
+                "schedule": "https://www.mlb.com/padres/schedule",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-112.06694, 33.44528],
+                "league": "National League",
+                "division": "West",
+                "team": "Diamondbacks",
+                "city": "Phoenix",
+                "stadium": "Chase Field",
+                "schedule": "https://www.mlb.com/dbacks/schedule",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-79.38917, 43.64139],
+                "league": "American League",
+                "division": "East",
+                "team": "Blue Jays",
+                "city": "Toronto",
+                "stadium": "Rogers Centre",
+                "schedule": "https://www.mlb.com/bluejays/schedule",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-80.00583, 40.44694],
+                "league": "National League",
+                "division": "Central",
+                "team": "Pirates",
+                "city": "Pittsburgh",
+                "stadium": "PNC Park",
+                "schedule": "https://www.mlb.com/pirates/schedule",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-93.27833, 44.98167],
+                "league": "American League",
+                "division": "Central",
+                "team": "Twins",
+                "city": "Minneapolis",
+                "stadium": "Target Field",
+                "schedule": "https://www.mlb.com/twins/schedule",
+                "logo": "y"
+            }
+        ];
+
+        // Function to create a custom popup content
+        function createPopupContent(data) {
+            return `
+                <div>
+                    <h3>${data.team}</h3>
+                    <p><b>City:</b> ${data.city}</p>
+                    <p><b>Arena:</b> ${data.stadium}</p>
+                    <p><b>Conference:</b> ${data.league}</p>
+                    <p><b>Division:</b> ${data.division}</p>
+                    <p><a href="${data.schedule}" target="_blank">View Schedule</a></p>
+                    <!-- Add logo by hand if needed -->
+                </div>
+            `;
+        }
+
+        function createCombinedPopupContent(teams) {
+            var content = '<div class="popup-content-container">';
+            content += teams.map(team => `
+                <div class="popup-content">
+                    <h3>${team.team}</h3>
+                    <p><b>City:</b> ${team.city}</p>
+                    <p><b>Arena:</b> ${team.stadium}</p>
+                    <p><b>Conference:</b> ${team.league}</p>
+                    <p><b>Division:</b> ${team.division}</p>
+                    <p><a href="${team.schedule}" target="_blank">View Schedule</a></p>
+                </div>
+            `).join('');
+            content += '</div>';
+            return content;
+        }
+
+        // Group teams by coordinates
+        var markers = {}; // Dictionary to hold references to markers
+
+        // Function to create a marker for each team
+        arenasData.forEach(function(data) {
+            var marker = L.marker([data.coordinates[1], data.coordinates[0]])
+                        .addTo(map)
+                        .bindPopup(createPopupContent(data)); // Assuming createPopupContent is your function
+            markers[data.team] = marker; // Store the marker with the team name as key
+        });
+
+        // Updated event listeners for team links
+        document.querySelectorAll('.team-link').forEach(function(link) {
+            link.addEventListener('click', function(event) {
+                event.preventDefault();
+                var teamName = this.getAttribute('data-team');
+                var marker = markers[teamName];
+                if (marker) {
+                map.flyTo(marker.getLatLng(), 12); // Zoom level 13, adjust as needed
+                setTimeout(function() {
+                    marker.openPopup();
+                }, 1000);}
+            });
+        })
+
+        // Group teams by coordinates
+        var teamsByCoordinates = {};
+        arenasData.forEach(function(data) {
+            var key = data.coordinates.join(',');
+            teamsByCoordinates[key] = teamsByCoordinates[key] || [];
+            teamsByCoordinates[key].push(data);
+        });
+
+        // Add markers to the map with grouped popup information
+        Object.keys(teamsByCoordinates).forEach(function(key) {
+            var teams = teamsByCoordinates[key];
+            var coordinates = teams[0].coordinates;
+            var marker = L.marker([coordinates[1], coordinates[0]]).addTo(map);
+            var popupContent = createCombinedPopupContent(teams);
+            marker.bindPopup(popupContent);
+        });
+    </script>
+</body>
+</html>

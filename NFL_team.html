@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Sports Teams Visualization</title>
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    </head>
+<body>
+    <header>
+        <h1>Sports Teams Visualization</h1>
+		<!-- Nav is a sematic tag page that aids accessibility -->
+		<nav>
+			<ul>
+				<!-- Since I am on the index file I added class = action to the link to index. -->
+				<!-- For this homework leave the class on index for all three pages. -->
+				<li><a href="index.html">NBA</a></li>
+				<li class="active"><a href="NFL_team.html">NFL</a></li>
+				<li><a href="MLB_team.html">MLB</a></li>
+                <li><a href="NHL_team.html">NHL</a></li>
+			</ul>
+		</nav>
+		<!-- The h1 is a semantic tag that aids accessibility -->
+        <a href = "#main-content">Skip to Main Content</a>    
+	</header>
+
+    <!-- Content for NBA, this can be your existing map or other content -->
+    <div class="content">
+        <div id="map-container">
+            <div id="map"></div>
+        </div>
+        <div id="team-list">
+            <h3>AFC Conference</h3>
+            <h4>AFC East</h4>
+            <ul>
+                <li><a href="#" class="team-link" data-team="Bills">Buffalo Bills</a></li>
+                <li><a href="#" class="team-link" data-team="Dolphins">Miami Dolphins</a></li>
+                <li><a href="#" class="team-link" data-team="Patriots">New England Patriots</a></li>
+                <li><a href="#" class="team-link" data-team="Jets">New York Jets</a></li>
+            </ul>
+            <h4>AFC North</h4>
+            <ul>
+                <li><a href="#" class="team-link" data-team="Ravens">Baltimore Ravens</a></li>
+                <li><a href="#" class="team-link" data-team="Bengals">Cincinnati Bengals</a></li>
+                <li><a href="#" class="team-link" data-team="Browns">Cleveland Browns</a></li>
+                <li><a href="#" class="team-link" data-team="Steelers">Pittsburgh Steelers</a></li>
+            </ul>
+            <h4>AFC South</h4>
+            <ul>
+                <li><a href="#" class="team-link" data-team="Texans">Houston Texans</a></li>
+                <li><a href="#" class="team-link" data-team="Colts">Indianapolis Colts</a></li>
+                <li><a href="#" class="team-link" data-team="Jaguars">Jacksonville Jaguars</a></li>
+                <li><a href="#" class="team-link" data-team="Titans">Tennessee Titans</a></li>
+            </ul>
+            <h4>AFC West</h4>
+            <ul>
+                <li><a href="#" class="team-link" data-team="Broncos">Denver Broncos</a></li>
+                <li><a href="#" class="team-link" data-team="Chiefs">Kansas City Chiefs</a></li>
+                <li><a href="#" class="team-link" data-team="Raiders">Las Vegas Raiders</a></li>
+                <li><a href="#" class="team-link" data-team="Chargers">Los Angeles Chargers</a></li>
+            </ul>
+        
+            <h3>NFC Conference</h3>
+            <h4>NFC East</h4>
+            <ul>
+                <li><a href="#" class="team-link" data-team="Cowboys">Dallas Cowboys</a></li>
+                <li><a href="#" class="team-link" data-team="Giants">New York Giants</a></li>
+                <li><a href="#" class="team-link" data-team="Eagles">Philadelphia Eagles</a></li>
+                <li><a href="#" class="team-link" data-team="Redskins">Washington Commanders</a></li>
+            </ul>
+            <h4>NFC North</h4>
+            <ul>
+                <li><a href="#" class="team-link" data-team="Bears">Chicago Bears</a></li>
+                <li><a href="#" class="team-link" data-team="Lions">Detroit Lions</a></li>
+                <li><a href="#" class="team-link" data-team="Packers">Green Bay Packers</a></li>
+                <li><a href="#" class="team-link" data-team="Vikings">Minnesota Vikings</a></li>
+            </ul>
+            <h4>NFC South</h4>
+            <ul>
+                <li><a href="#" class="team-link" data-team="Falcons">Atlanta Falcons</a></li>
+                <li><a href="#" class="team-link" data-team="Panthers">Carolina Panthers</a></li>
+                <li><a href="#" class="team-link" data-team="Saints">New Orleans Saints</a></li>
+                <li><a href="#" class="team-link" data-team="Buccaneers">Tampa Bay Buccaneers</a></li>
+            </ul>
+            <h4>NFC West</h4>
+            <ul>
+                <li><a href="#" class="team-link" data-team="Cardinals">Arizona Cardinals</a></li>
+                <li><a href="#" class="team-link" data-team="Rams">Los Angeles Rams</a></li>
+                <li><a href="#" class="team-link" data-team="49ers">San Francisco 49ers</a></li>
+                <li><a href="#" class="team-link" data-team="Seahawks">Seattle Seahawks</a></li>
+            </ul>
+        </div>
+    </div>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        var map = L.map('map').setView([37.8, -96], 4); // Set the initial view of the map
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Embedded modified JSON data
+        var arenasData = [
+                {
+                "coordinates": [-86.771289, 36.166461],
+                "conference": "AFC",
+                "team": "Titans",
+                "city": "Tennessee",  // City is not provided in your CSV
+                "arena": "N/A", // Arena is not provided in your CSV
+                "schedule": "https://www.tennesseetitans.com/schedule", // URL is not provided in your CSV
+                "logo": "y" // Assuming 'y' indicates logo presence
+            },
+            {
+                "coordinates": [-74.076983, 40.812194],
+                "conference": "NFC",
+                "team": "Giants",
+                "city": "New York",
+                "arena": "N/A",
+                "schedule": "https://www.giants.com/schedule",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-80.015761, 40.446786],
+                "conference": "AFC",
+                "team": "Steelers",
+                "city": "Pittsburgh",
+                "arena": "N/A",
+                "schedule": "https://www.steelers.com/schedule",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-80.852861, 35.225808],
+                "conference": "NFC",
+                "team": "Panthers",
+                "city": "Carolina",
+                "arena": "N/A",
+                "schedule": "https://www.panthers.com/schedule/",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-76.622767, 39.277969],
+                "conference": "AFC",
+                "team": "Ravens",
+                "city": "Baltimore",
+                "arena": "N/A",
+                "schedule": "https://www.baltimoreravens.com/schedule/",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-82.50335, 27.975967],
+                "conference": "NFC",
+                "team": "Buccaneers",
+                "city": "Tampa",
+                "arena": "N/A",
+                "schedule": "https://www.buccaneers.com/schedule/",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-86.163806, 39.760056],
+                "conference": "AFC",
+                "team": "Colts",
+                "city": "Indianapolis",
+                "arena": "N/A",
+                "schedule": "https://www.colts.com/schedule/",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-93.258094, 44.973881],
+                "conference": "NFC",
+                "team": "Vikings",
+                "city": "Minniapolis",
+                "arena": "N/A",
+                "schedule": "https://www.vikings.com/schedule/",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-112.262608, 33.5277],
+                "conference": "NFC",
+                "team": "Cardinals",
+                "city": "Phoenix",
+                "arena": "N/A",
+                "schedule": "https://www.cardinals.com/schedule/",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-97.092778, 32.747778],
+                "conference": "NFC",
+                "team": "Cowboys",
+                "city": "Dallas",
+                "arena": "N/A",
+                "schedule": "https://www.dallascowboys.com/schedule/",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-84.400972, 33.757614],
+                "conference": "NFC",
+                "team": "Falcons",
+                "city": "Atlanta",
+                "arena": "N/A",
+                "schedule": "https://www.atlantafalcons.com/schedule/",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-74.076983, 40.812194],
+                "conference": "AFC",
+                "team": "Jets",
+                "city": "New York",
+                "arena": "N/A",
+                "schedule": "https://www.newyorkjets.com/schedule/",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-105.020097, 39.743936],
+                "conference": "AFC",
+                "team": "Broncos",
+                "city": "Denver",
+                "arena": "N/A",
+                "schedule": "https://www.denverbroncos.com/schedule/",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-80.238842, 25.957919],
+                "conference": "AFC",
+                "team": "Dolphins",
+                "city": "Miami",
+                "arena": "N/A",
+                "schedule": "https://www.miamidolphins.com/schedule/",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-75.167453, 39.900775],
+                "conference": "NFC",
+                "team": "Eagles",
+                "city": "Philadelphia",
+                "arena": "N/A",
+                "schedule": "https://www.philadelphiaeagles.com/schedule/",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-87.616672, 41.862306],
+                "conference": "NFC",
+                "team": "Bears",
+                "city": "Chicago",
+                "arena": "N/A",
+                "schedule": "https://www.chicagobears.com/schedule/",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-71.26435, 42.090925],
+                "conference": "AFC",
+                "team": "Patriots",
+                "city": "Boston",
+                "arena": "N/A",
+                "schedule": "https://www.patriots.com/schedule/",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-76.864517, 38.907697],
+                "conference": "NFC",
+                "team": "Redskins",
+                "city": "Washington",
+                "arena": "N/A",
+                "schedule": "https://www.redskins.com/schedule/",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-88.062167, 44.501306],
+                "conference": "NFC",
+                "team": "Packers",
+                "city": "Green Bay",
+                "arena": "N/A",
+                "schedule": "https://www.packers.com/schedule/",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-118.33867482342059, 33.95362526365026],
+                "conference": "AFC",
+                "team": "Chargers",
+                "city": "Los Angeles",
+                "arena": "N/A",
+                "schedule": "https://www.chargers.com/schedule/",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-90.081364, 29.950931],
+                "conference": "NFC",
+                "team": "Saints",
+                "city": "New Orlean",
+                "arena": "N/A",
+                "schedule": "https://www.neworleanssaints.com/schedule/",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-95.410956, 29.684781],
+                "conference": "AFC",
+                "team": "Texans",
+                "city": "Houston",
+                "arena": "N/A",
+                "schedule": "https://www.houstontexans.com/schedule/",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-78.786978, 42.773739],
+                "conference": "AFC",
+                "team": "Bills",
+                "city": "Buffalo",
+                "arena": "N/A",
+                "schedule": "https://www.buffalobills.com/schedule/",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-122.386256, 37.713486],
+                "conference": "NFC",
+                "team": "49ers",
+                "city": "San Francisco",
+                "arena": "N/A",
+                "schedule": "https://www.49ers.com/schedule/",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-81.637356, 30.323925],
+                "conference": "AFC",
+                "team": "Jaguars",
+                "city": "Jacksonville",
+                "arena": "N/A",
+                "schedule": "https://www.jaguars.com/schedule/",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-81.699564, 41.506022],
+                "conference": "AFC",
+                "team": "Browns",
+                "city": "Cleveland",
+                "arena": "N/A",
+                "schedule": "https://www.browns.com/schedule/",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-122.200889, 37.751411],
+                "conference": "AFC",
+                "team": "Raiders",
+                "city": "Las Vegas",
+                "arena": "N/A",
+                "schedule": "https://www.raiders.com/schedule/",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-94.484039, 39.048914],
+                "conference": "AFC",
+                "team": "Chiefs",
+                "city": "Kansas City",
+                "arena": "N/A",
+                "schedule": "https://www.chiefs.com/schedule/",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-118.33867482342059, 33.95362526365026],
+                "conference": "NFC",
+                "team": "Rams",
+                "city": "Los Angeles",
+                "arena": "N/A",
+                "schedule": "https://www.therams.com/schedule/",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-122.331625, 47.595153],
+                "conference": "NFC",
+                "team": "Seahawks",
+                "city": "Seattle",
+                "arena": "N/A",
+                "schedule": "https://www.seahawks.com/schedule/",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-84.516039, 39.095442],
+                "conference": "AFC",
+                "team": "Bengals",
+                "city": "Cincinnati",
+                "arena": "N/A",
+                "schedule": "https://www.bengals.com/schedule/",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-83.045808, 42.340156],
+                "conference": "NFC",
+                "team": "Lions",
+                "city": "Detroit",
+                "arena": "N/A",
+                "schedule": "https://www.detroitlions.com/schedule/",
+                "logo": "y"
+            }
+        ];
+
+        // Function to create a custom popup content
+        function createPopupContent(data) {
+            return `
+                <div>
+                    <h3>${data.team}</h3>
+                    <p><b>City:</b> ${data.city}</p>
+                    <p><b>Conference:</b> ${data.conference}</p>
+                    <p><a href="${data.schedule}" target="_blank">View Schedule</a></p>
+                    <!-- Add logo by hand if needed -->
+                </div>
+            `;
+        }
+
+        function createCombinedPopupContent(teams) {
+            var content = '<div class="popup-content-container">';
+            content += teams.map(team => `
+                <div class="popup-content">
+                    <h3>${team.team}</h3>
+                    <p><b>City:</b> ${team.city}</p>
+                    <p><b>Conference:</b> ${team.conference}</p>
+                    <p><a href="${team.schedule}" target="_blank">View Schedule</a></p>
+                </div>
+            `).join('');
+            content += '</div>';
+            return content;
+        }
+
+        // Group teams by coordinates
+        var markers = {}; // Dictionary to hold references to markers
+
+        // Function to create a marker for each team
+        arenasData.forEach(function(data) {
+            var marker = L.marker([data.coordinates[1], data.coordinates[0]])
+                        .addTo(map)
+                        .bindPopup(createPopupContent(data)); // Assuming createPopupContent is your function
+            markers[data.team] = marker; // Store the marker with the team name as key
+        });
+
+        // Updated event listeners for team links
+        document.querySelectorAll('.team-link').forEach(function(link) {
+            link.addEventListener('click', function(event) {
+                event.preventDefault();
+                var teamName = this.getAttribute('data-team');
+                var marker = markers[teamName];
+                if (marker) {
+                map.flyTo(marker.getLatLng(), 12); // Zoom level 13, adjust as needed
+                setTimeout(function() {
+                    marker.openPopup();
+                }, 1000);}
+            });
+        })
+
+        // Group teams by coordinates
+        var teamsByCoordinates = {};
+        arenasData.forEach(function(data) {
+            var key = data.coordinates.join(',');
+            teamsByCoordinates[key] = teamsByCoordinates[key] || [];
+            teamsByCoordinates[key].push(data);
+        });
+
+        // Add markers to the map with grouped popup information
+        Object.keys(teamsByCoordinates).forEach(function(key) {
+            var teams = teamsByCoordinates[key];
+            var coordinates = teams[0].coordinates;
+            var marker = L.marker([coordinates[1], coordinates[0]]).addTo(map);
+            var popupContent = createCombinedPopupContent(teams);
+            marker.bindPopup(popupContent);
+        });
+    </script>
+</body>
+</html>
