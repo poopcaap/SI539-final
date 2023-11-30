@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Sports Teams Visualization</title>
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    </head>
+<body>
+    <header>
+        <h1>Sports Teams Visualization</h1>
+		<!-- Nav is a sematic tag page that aids accessibility -->
+		<nav>
+			<ul>
+				<!-- Since I am on the index file I added class = action to the link to index. -->
+				<!-- For this homework leave the class on index for all three pages. -->
+				<li><a href="NBA_team.html">NBA</a></li>
+				<li><a href="NFL_team.html">NFL</a></li>
+				<li><a href="MLB_team.html">MLB</a></li>
+                <li class="active"><a href="NHL_team.html">NHL</a></li>
+			</ul>
+		</nav>
+		<!-- The h1 is a semantic tag that aids accessibility -->
+        <a href = "#main-content">Skip to Main Content</a>    
+	</header>
+
+    <!-- Content for NBA, this can be your existing map or other content -->
+    <div class="content">
+        <div id="map-container">
+            <div id="map"></div>
+        </div>
+        <div id="team-list">
+            <h3>Eastern Conference</h3>
+            <h4>Atlantic Division</h4>
+            <ul>
+                <li><a href="#" class="team-link" data-team="Boston Bruins">Boston Bruins</a></li>
+                <li><a href="#" class="team-link" data-team="Buffalo Sabres">Buffalo Sabres</a></li>
+                <li><a href="#" class="team-link" data-team="Detroit Red Wings">Detroit Red Wings</a></li>
+                <li><a href="#" class="team-link" data-team="Florida Panthers">Florida Panthers</a></li>
+                <li><a href="#" class="team-link" data-team="Montreal Canadiens">Montreal Canadiens</a></li>
+                <li><a href="#" class="team-link" data-team="Ottawa Senators">Ottawa Senators</a></li>
+                <li><a href="#" class="team-link" data-team="Tampa Bay Lightning">Tampa Bay Lightning</a></li>
+                <li><a href="#" class="team-link" data-team="Toronto Maple Leafs">Toronto Maple Leafs</a></li>
+            </ul>
+            <h4>Metropolitan Division</h4>
+            <ul>
+                <li><a href="#" class="team-link" data-team="Carolina Hurricanes">Carolina Hurricanes</a></li>
+                <li><a href="#" class="team-link" data-team="Columbus Blue Jackets">Columbus Blue Jackets</a></li>
+                <li><a href="#" class="team-link" data-team="New Jersey Devils">New Jersey Devils</a></li>
+                <li><a href="#" class="team-link" data-team="New York Islanders">New York Islanders</a></li>
+                <li><a href="#" class="team-link" data-team="New York Rangers">New York Rangers</a></li>
+                <li><a href="#" class="team-link" data-team="Philadelphia Flyers">Philadelphia Flyers</a></li>
+                <li><a href="#" class="team-link" data-team="Pittsburgh Penguins">Pittsburgh Penguins</a></li>
+                <li><a href="#" class="team-link" data-team="Washington Capitals">Washington Capitals</a></li>
+            </ul>
+            
+            <h3>Western Conference</h3>
+            <h4>Central Division</h4>
+            <ul>
+                <!-- 请添加西部分区球队 -->
+                <li><a href="#" class="team-link" data-team="Chicago Blackhawks">Chicago Blackhawks</a></li>
+                <li><a href="#" class="team-link" data-team="Colorado Avalanche">Colorado Avalanche</a></li>
+                <li><a href="#" class="team-link" data-team="Dallas Stars">Dallas Stars</a></li>
+                <li><a href="#" class="team-link" data-team="Minnesota Wild">Minnesota Wild</a></li>
+                <li><a href="#" class="team-link" data-team="Nashville Predators">Nashville Predators</a></li>
+                <li><a href="#" class="team-link" data-team="St. Louis Blues">St. Louis Blues</a></li>
+                <li><a href="#" class="team-link" data-team="Winnipeg Jets">Winnipeg Jets</a></li>
+                <li><a href="#" class="team-link" data-team="Arizona Coyotes">Arizona Coyotes</a></li>
+            </ul>
+            
+            <h4>Pacific Division</h4>
+            <ul>
+                <!-- 请添加西部分区球队 -->
+                <li><a href="#" class="team-link" data-team="Anaheim Ducks">Anaheim Ducks</a></li>
+                <li><a href="#" class="team-link" data-team="Vegas Golden Knights">Vegas Golden Knights</a></li>
+                <li><a href="#" class="team-link" data-team="Calgary Flames">Calgary Flames</a></li>
+                <li><a href="#" class="team-link" data-team="Edmonton Oilers">Edmonton Oilers</a></li>
+                <li><a href="#" class="team-link" data-team="Los Angeles Kings">Los Angeles Kings</a></li>
+                <li><a href="#" class="team-link" data-team="San Jose Sharks">San Jose Sharks</a></li>
+                <li><a href="#" class="team-link" data-team="Seattle Kraken">Seattle Kraken</a></li>
+                <li><a href="#" class="team-link" data-team="Vancouver Canucks">Vancouver Canucks</a></li>
+            </ul>
+        </div>
+    </div>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        var map = L.map('map').setView([42.8, -96], 4); // Set the initial view of the map
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Embedded modified JSON data
+        var arenasData = [
+            {
+                "coordinates": [-73.567256, 45.5016889],
+                "division": "Atlantic",
+                "team": "Montreal Canadiens",
+                "city": "Montreal",
+                "arena": "Bell Centre",
+                "schedule": "https://www.nhl.com/canadiens/schedule",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-75.167453, 39.9525839],
+                "division": "Metropolitan",
+                "team": "Philadelphia Flyers",
+                "city": "Philadelphia",
+                "arena": "Wells Fargo Center",
+                "schedule": "https://www.nhl.com/flyers/schedule",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-71.0621465, 42.3600825],
+                "division": "Atlantic",
+                "team": "Boston Bruins",
+                "city": "Boston",
+                "arena": "TD Garden",
+                "schedule": "https://www.nhl.com/bruins/schedule",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-73.99353026694394, 40.75049546449081],
+                "division": "Metropolitan",
+                "team": "New York Rangers",
+                "city": "New York",
+                "arena": "Madison Square Garden",
+                "schedule": "https://www.nhl.com/rangers/schedule",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-87.6297982, 41.8781136],
+                "division": "Central",
+                "team": "Chicago Blackhawks",
+                "city": "Chicago",
+                "arena": "United Center",
+                "schedule": "https://www.nhl.com/blackhawks/schedule",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-79.3791224, 43.6534817],
+                "division": "Atlantic",
+                "team": "Toronto Maple Leafs",
+                "city": "Toronto",
+                "arena": "Scotiabank Arena",
+                "schedule": "https://www.nhl.com/mapleleafs/schedule",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-80.8431267, 35.2270869],
+                "division": "Metropolitan",
+                "team": "Carolina Hurricanes",
+                "city": "Raleigh",
+                "arena": "PNC Arena",
+                "schedule": "https://www.nhl.com/hurricanes/schedule",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-83.0457538, 42.331427],
+                "division": "Atlantic",
+                "team": "Detroit Red Wings",
+                "city": "Detroit",
+                "arena": "Little Caesars Arena",
+                "schedule": "https://www.nhl.com/redwings/schedule",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-90.20262465945528, 38.626747973377235],
+                "division": "Central",
+                "team": "St. Louis Blues",
+                "city": "St. Louis",
+                "arena": "Enterprise Center",
+                "schedule": "https://www.nhl.com/blues/schedule",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-96.81065167076495, 32.79061625527139],
+                "division": "Central",
+                "team": "Dallas Stars",
+                "city": "Dallas",
+                "arena": "American Airlines Center",
+                "schedule": "https://www.nhl.com/stars/schedule",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-122.329437, 47.606209],
+                "division": "Pacific",
+                "team": "Seattle Kraken",
+                "city": "Seattle",
+                "arena": "Climate Pledge Arena",
+                "schedule": "https://www.nhl.com/kraken/schedule",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-123.120737, 49.282729],
+                "division": "Pacific",
+                "team": "Vancouver Canucks",
+                "city": "Vancouver",
+                "arena": "Rogers Arena",
+                "schedule": "https://www.nhl.com/canucks/schedule",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-114.0719, 51.0447],
+                "division": "Pacific",
+                "team": "Calgary Flames",
+                "city": "Calgary",
+                "arena": "Scotiabank Saddledome",
+                "schedule": "https://www.nhl.com/flames/schedule",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-113.4909, 53.5461],
+                "division": "Pacific",
+                "team": "Edmonton Oilers",
+                "city": "Edmonton",
+                "arena": "Rogers Place",
+                "schedule": "https://www.nhl.com/oilers/schedule",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-117.87618975410794, 33.80785648793419],
+                "division": "Pacific",
+                "team": "Anaheim Ducks",
+                "city": "Anaheim",
+                "arena": "Honda Center",
+                "schedule": "https://www.nhl.com/ducks/schedule",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-104.995194, 39.748672],
+                "division": "Central",
+                "team": "Colorado Avalanche",
+                "city": "Denver",
+                "arena": "Ball Arena",
+                "schedule": "https://www.nhl.com/avalanche/schedule",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-93.265011, 44.977753],
+                "division": "Central",
+                "team": "Minnesota Wild",
+                "city": "Saint Paul",
+                "arena": "Xcel Energy Center",
+                "schedule": "https://www.nhl.com/wild/schedule",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-112.071643, 33.445974],
+                "division": "Central",
+                "team": "Arizona Coyotes",
+                "city": "Glendale",
+                "arena": "Gila River Arena",
+                "schedule": "https://www.nhl.com/coyotes/schedule",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-82.45166426492523, 27.942665872204802],
+                "division": "Atlantic",
+                "team": "Tampa Bay Lightning",
+                "city": "Tampa",
+                "arena": "Amalie Arena",
+                "schedule": "https://www.nhl.com/lightning/schedule",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-118.243685, 34.052235],
+                "division": "Pacific",
+                "team": "Los Angeles Kings",
+                "city": "Los Angeles",
+                "arena": "Crypto.com Arena",
+                "schedule": "https://www.nhl.com/kings/schedule",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-81.66209, 30.332184],
+                "division": "Atlantic",
+                "team": "Florida Panthers",
+                "city": "Sunrise",
+                "arena": "FLA Live Arena",
+                "schedule": "https://www.nhl.com/panthers/schedule",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-79.945932, 40.439348],
+                "division": "Metropolitan",
+                "team": "Pittsburgh Penguins",
+                "city": "Pittsburgh",
+                "arena": "PPG Paints Arena",
+                "schedule": "https://www.nhl.com/penguins/schedule",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-74.17124829373839, 40.73359387998767],
+                "division": "Metropolitan",
+                "team": "New Jersey Devils",
+                "city": "Newark",
+                "arena": "Prudential Center",
+                "schedule": "https://www.nhl.com/devils/schedule",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-78.876457, 42.875856],
+                "division": "Atlantic",
+                "team": "Buffalo Sabres",
+                "city": "Buffalo",
+                "arena": "KeyBank Center",
+                "schedule": "https://www.nhl.com/sabres/schedule",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-83.00641308397121, 39.969412732967754],
+                "division": "Metropolitan",
+                "team": "Columbus Blue Jackets",
+                "city": "Columbus",
+                "arena": "Nationwide Arena",
+                "schedule": "https://www.nhl.com/bluejackets/schedule",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-97.14373360594496, 49.892702810265845],
+                "division": "Central",
+                "team": "Winnipeg Jets",
+                "city": "Winnipeg",
+                "arena": "Canada Life Centre",
+                "schedule": "https://www.nhl.com/jets/schedule",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-84.396255, 33.7575],
+                "division": "Metropolitan",
+                "team": "Atlanta Thrashers",
+                "city": "Atlanta",
+                "arena": "Philips Arena",
+                "schedule": "https://www.nhl.com/thrashers/schedule",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-75.720049, 45.354189],
+                "division": "Atlantic",
+                "team": "Ottawa Senators",
+                "city": "Ottawa",
+                "arena": "Canadian Tire Centre",
+                "schedule": "https://www.nhl.com/senators/schedule",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-77.019386, 38.898056],
+                "division": "Metropolitan",
+                "team": "Washington Capitals",
+                "city": "Washington, D.C.",
+                "arena": "Capital One Arena",
+                "schedule": "https://www.nhl.com/capitals/schedule",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-73.72576085382448, 40.711594892096464],
+                "division": "Metropolitan",
+                "team": "New York Islanders",
+                "city": "Uniondale",
+                "arena": "UBS Arena",
+                "schedule": "https://www.nhl.com/islanders/schedule",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-121.903611, 37.332778],
+                "division": "Pacific",
+                "team": "San Jose Sharks",
+                "city": "San Jose",
+                "arena": "SAP Center",
+                "schedule": "https://www.nhl.com/sharks/schedule",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-86.777216, 36.159179],
+                "division": "Central",
+                "team": "Nashville Predators",
+                "city": "Nashville",
+                "arena": "Bridgestone Arena",
+                "schedule": "https://www.nhl.com/predators/schedule",
+                "logo": "y"
+            },
+            {
+                "coordinates": [-115.151389, 36.102778],
+                "division": "Pacific",
+                "team": "Vegas Golden Knights",
+                "city": "Las Vegas",
+                "arena": "T-Mobile Arena",
+                "schedule": "https://www.nhl.com/goldenknights/schedule",
+                "logo": "y"
+            }
+        ];
+
+        // Function to create a custom popup content
+        function createPopupContent(data) {
+            return `
+                <div>
+                    <h3>${data.team}</h3>
+                    <p><b>City:</b> ${data.city}</p>
+                    <p><b>Arena:</b> ${data.arena}</p>
+                    <p><b>Division:</b> ${data.division}</p>
+                    <p><a href="${data.schedule}" target="_blank">View Schedule</a></p>
+                    <!-- Add logo by hand if needed -->
+                </div>
+            `;
+        }
+
+        function createCombinedPopupContent(teams) {
+            var content = '<div class="popup-content-container">';
+            content += teams.map(team => `
+                <div class="popup-content">
+                    <h3>${team.team}</h3>
+                    <p><b>City:</b> ${team.city}</p>
+                    <p><b>Arena:</b> ${team.arena}</p>
+                    <p><b>Division:</b> ${team.division}</p>
+                    <p><a href="${team.schedule}" target="_blank">View Schedule</a></p>
+                </div>
+            `).join('');
+            content += '</div>';
+            return content;
+        }
+
+        // Group teams by coordinates
+        var markers = {}; // Dictionary to hold references to markers
+
+        // Function to create a marker for each team
+        arenasData.forEach(function(data) {
+            var marker = L.marker([data.coordinates[1], data.coordinates[0]])
+                        .addTo(map)
+                        .bindPopup(createPopupContent(data)); // Assuming createPopupContent is your function
+            markers[data.team] = marker; // Store the marker with the team name as key
+        });
+
+        // Updated event listeners for team links
+        document.querySelectorAll('.team-link').forEach(function(link) {
+            link.addEventListener('click', function(event) {
+                event.preventDefault();
+                var teamName = this.getAttribute('data-team');
+                var marker = markers[teamName];
+                if (marker) {
+                map.flyTo(marker.getLatLng(), 12); // Zoom level 13, adjust as needed
+                setTimeout(function() {
+                    marker.openPopup();
+                }, 1000);}
+            });
+        })
+
+        // Group teams by coordinates
+        var teamsByCoordinates = {};
+        arenasData.forEach(function(data) {
+            var key = data.coordinates.join(',');
+            teamsByCoordinates[key] = teamsByCoordinates[key] || [];
+            teamsByCoordinates[key].push(data);
+        });
+
+        // Add markers to the map with grouped popup information
+        Object.keys(teamsByCoordinates).forEach(function(key) {
+            var teams = teamsByCoordinates[key];
+            var coordinates = teams[0].coordinates;
+            var marker = L.marker([coordinates[1], coordinates[0]]).addTo(map);
+            var popupContent = createCombinedPopupContent(teams);
+            marker.bindPopup(popupContent);
+        });
+    </script>
+</body>
+</html>
