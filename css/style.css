@@ -1,0 +1,150 @@
+/* General body styling */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+/* Header styles */
+header {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+}
+
+header h1 {
+    margin: 0;
+}
+
+/* Navigation bar styles */
+nav {
+    background: #444;
+}
+
+nav ul {
+    padding: 0;
+    list-style: none;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+}
+
+nav ul li {
+    margin: 0;
+}
+
+nav ul li a {
+    color: white;
+    padding: 15px 20px;
+    display: block;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+nav ul li.active a,
+nav ul li a:hover {
+    background-color: #555;
+}
+
+/* Skip link for accessibility */
+a[href="#main-content"] {
+    position: absolute;
+    left: -999px;
+    background: #000;
+    color: white;
+    padding: 8px;
+    z-index: 100;
+}
+
+a[href="#main-content"]:focus {
+    left: 0;
+}
+
+/* Styles for the NBA section and map */
+#nba {
+    padding: 20px;
+}
+
+#nfl {
+    padding: 20px;
+}
+
+#nhl {
+    padding: 20px;
+}
+#mlb {
+    padding: 20px;
+}
+#map {
+    height: 600px;
+}
+.popup-content-container {
+    display: flex;
+    flex-wrap: nowrap;
+    max-width: 400px; /* Adjust the width as needed */
+}
+.popup-content {
+    flex: 1;
+    padding: 5px;
+}
+
+#conferenceToggle {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.content {
+    display: flex;
+}
+
+#map-container {
+    width: 70%;
+    height: 600px;
+    padding: 2%; /* Same height as the map */
+}
+
+#team-list {
+    width: 30%;
+    height: 600px; /* Same height as the map */
+    padding: 2%;
+    font-family: Arial, sans-serif;
+    color: #333;
+    background-color: #f8f8f8;
+    border-left: 1px solid #ccc;
+    overflow-y: auto;
+}
+
+#team-list h3 {
+    color: #011527; /* A nice blue, adjust as you like */
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+#team-list h4 {
+    color: #033c6e; /* A nice blue, adjust as you like */
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+#team-list ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+#team-list li {
+    padding: 5px 0;
+}
+
+#team-list a {
+    color: #5db0f8; /* Matching the headers */
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+#team-list a:hover {
+    color: #01447e; /* Darker blue for hover effect */
+}
